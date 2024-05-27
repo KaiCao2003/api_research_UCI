@@ -59,10 +59,7 @@ def received(code, email, received_time):
     conn.commit()
     mail.confirmation_email([email], code)
     return True
-
-
-def send(email_list):
-    return True
+  
 
 def give_up(code, email_list, current_time):
     mail.fail_email(code,email_list, current_time)
@@ -106,8 +103,7 @@ def check_status(code):
             return
 
         if status_from_check in ["OPEN", 'Waitl']:
-            if status_from_db == 'FULL':
-                # success = send(email_list)
+            if status_from_db == 'FULL' or status_from_db == 'NewOnly:
                 success = mail.update_email(email_list, code)
                 if success:
                     cursor.execute('UPDATE dataset SET finished = ?, last_change_time = ? WHERE code = ?',
